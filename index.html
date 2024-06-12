@@ -681,7 +681,6 @@ const produceIds = [];
     if (produceIds.length > 0) {
         $('#messages').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
 		$('#messages_content').html('<h4>Form Submitted! The produce IDs are: ' + produceIds.join(', ') + '</h4>');
-		$('#modal').modal('show');
 		event.preventDefault();
     }
 });
