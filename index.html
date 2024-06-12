@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Homegrown Produce Aggregation Form </title>
+<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    * {
+        margin: 0; padding: 0;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+		overflow: hidden;
+		padding-top: 20px;
+    }
+	
+	#successMessage {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+		padding: 10px;
+    }
+	
+	#container {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  position: relative;
+	  width: 100%;
+	  height: 100vh;
+	}
+
+    .form-wrap {
+        width: 500px;
+        background: #00FFFF;
+        padding: 40px 20px;
+        box-sizing: border-box;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+    
+    h2 {
+        text-align: center;
+		justify-content: center;
+        font-weight: bold;
+		margin-bottom: 20px;
+		white-space: nowrap;
+    }
+	
+	h4 {
+        text-align: center;
+		justify-content: center;
+        font-weight: bold;
+		margin-bottom: 20px;
+		word-wrap: break-word;
+    }
+	
+	h5 {
+        text-align: center;
+		justify-content: center;
+        font-weight: normal;
+		margin-bottom: 20px;
+		word-wrap: break-word;
+    }
+    
+    input {
+        width: 220px;
+        background: none;
+        border: 1px solid #fff;
+        border-radius: 3px;
+        padding: 6px 15px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        font-size: 16px;
+		float: right;
+    }
+	
+	select {
+        width: 220px;
+        background: none;
+        border: 1px solid #fff;
+        border-radius: 3px;
+        padding: 6px 15px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        font-size: 16px;
+		float: right;
+    }
+	
+	label {
+		font-size: 13px;
+	}
+	
+	.quantext {
+        width: 220px;
+        background: none;
+        border: 1px solid #fff;
+        border-radius: 3px;
+        padding: 6px 15px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        font-size: 16px;
+		float: left;
+    }
+	
+	.shortselect {
+        width: 40px;
+        background: none;
+        border: 1px solid #fff;
+        border-radius: 3px;
+        padding: 6px 15px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        font-size: 16px;
+		float: right;
+    }
+
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .btn {
+      position: relative;
+	  z-index: 10;
+	  width: 200px;
+	  height: 60px;
+	  border: 1px solid rgba(255, 255, 255, .5);
+	  border-radius: 30px;
+	  background-color: #717171;
+	  color: #fff;
+	  margin-left: 130px;
+      margin-bottom: 20px;
+	  padding: 6px 15px;
+	  font-size: 1.25rem;
+	  letter-spacing: 1px;
+	  outline: none;
+	  cursor: pointer;
+    }
+	
+	.btn::before {
+	  position: absolute;
+	  top: 15px;
+	  left: 50px;
+	  z-index: -1;
+	  width: 100px;
+	  height: 30px;
+	  border-radius: 50px;
+	  filter: blur(10px);
+	  content: "";
+	  transition: .5s;
+	}
+	
+	.btn:hover::before {
+	  background-color: #0cbcf2;
+	  transform: scale(2);
+	}
+	
+	.add-btn {
+	  background-color: #D3D3D3;
+	  border: solid;
+	  color: black;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  cursor: pointer;
+	  float: left;
+	}
+	
+	.del-btn {
+	  background-color: #ff0000;
+	  border: solid;
+	  color: black;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  cursor: pointer;
+	  float: left;
+	}
+	
+	.label-class {
+		float: left;
+	}
+	
+	.checkbox-label {
+		float: right;
+	}
+	
+	.mand:after {
+		color: #e32;
+		content: ' *';
+		display:inline;
+	}
+	
+	span {
+		display: block;
+		overflow: hidden;
+		padding: 0px 4px 0px 6px
+	}
+	
+	.cropsList {
+	
+	}
+	
+	.alert-success {
+		display: none;
+	}
+    
+	#aggForm {
+		height:500px;
+		overflow-y:auto;
+	}
+	
+	.hidden {
+		display: none;
+    }
+		
+</style>
+</head>
+<body>
+	<div class="container">
+
+            <div id="messages" class="hide" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <div id="messages_content"></div>
+            </div>
+	<div id="container">
+    <div class="centered">	
+    <div class="form-wrap" id="aggForm">
+        <form>
+			<div><h2> Homegrown Produce Aggregation Form </h2></div>
+			<div><h4> <i>(All fields within <b style="color: #e32;">*</b> must be completed)</i> </h4></div>
+			<div><h5><i>To be completed by Rico (at pickup from Dom only) and Mona (upon receiving each produce allotment)</i></h5></div>
+			<div>
+            <label class="mand label-class">First Name:</label>
+			<span><input type="text" name="fname" id="fname" pattern="^[^\d]+$" title="Enter a valid name" value="" required></span>
+			</div>
+			<div>
+            <label class="mand label-class">Last Name:</label>
+			<span><input type="text" name="lname" id="lname" pattern="^[^\d]+$" title="Enter a valid name" value="" required></span>
+			</div>
+			<div>
+            <label class="mand label-class">Farm Name:</label>
+			<span><select name="farmname" id="farmname" onchange="configureDropDownLists(this,document.getElementById('pickupsite'))" required>
+				<option value="">-Select-</option>
+				<option value="brick gardens">Brick Gardens</option>
+				<option value="qmm">QMM</option>
+				<option value="lincoln heights">Lincoln Heights</option>
+				<option value="other">Other</option>
+			</select></span>
+			</div>
+			<div>
+            <label class="mand label-class">LFN Vendor or Source Farm?</label>
+			<span><select name="farmtype" id="farmtype" required>
+				<option value="">-Select-</option>
+				<option value="lfn">LFN Vendor</option>
+				<option value="supplier">Source Farm</option>
+			</select></span>
+			</div>
+			<div>
+            <label class="mand label-class">Received Site:</label>
+			<span><select name="pickupsite" id="pickupsite" required>
+				<option value="">-Select-</option> 
+				<!-- <option value="lexington">Lexington</option>
+				<option value="may street">May Street</option>
+				<option value="stanton">Stanton</option>
+				<option value="northside">Northside</option>
+				<option value="madisonville">Madisonville</option>
+				<option value="other">Other</option> -->
+			</select></span>
+			</div>
+			<div>
+            <label class="label-class">Received Location:</label>
+			<span><input type="text" name="name" id="name" pattern="^[^\d]+$" title="Enter a valid name" value=""></span>
+			</div>
+			<div>
+            <label class="mand label-class">Received Date:</label>
+			<span><input type="date" id="pickupdate" name="pickupdate" required></span>
+			</div>
+			<div>
+            <label class="mand label-class">Received Time:</label>
+			<span><input type="time" id="pickuptime" name="pickuptime" required></span>
+			</div>
+			<!-- <div>
+            <label class="mand label-class"><u>PRODUCE DETAILS:</u></label><br>
+			</div> -->
+			<div id="produce-details">
+            
+			</div>			
+			<div><input type="button" class="add-btn" value="Add Produce" onclick="addProduceDetails()"></div><br><br><br><br>
+			<div>
+			<label class="label-class">Upload Photo(s):</label>
+			<span><input type="file" multiple="" data-max_length="5" accept=".jpg,.jpeg, .png" title="Enter a valid photo"></span>
+			</div>
+			<div><h5><i><b>Note:</b>&nbsp;Please Upload a Closeup of the Produce item(s). Also, to select multiple files, hold down the CTRL or SHIFT key while selecting.</i></h5></div>
+			<div>
+            <label class="mand label-class">How "Clean" was the Produce?</label>
+			<span><select name="producecleaned" id="producecleaned" required>
+				<option value="">-Select-</option>
+				<option value="excellent">Excellent</option>
+				<option value="adequate">Adequate</option>
+				<option value="poor">Poor</option>
+			</select></span>
+			</div>
+			<div>
+			<!-- <label>Food bins/crates returned to the distributor?</label> -->
+            <label class="label-class mand">Food bins/crates returned?</label>
+			<span><select name="producecleaned" id="producecleaned" required>
+				<option value="">-Select-</option>
+				<option value="yes">Yes</option>
+				<option value="no">No</option>
+			</select></span>
+			</div>			
+			<div>
+			<label class="label-class">Comments:</label>
+			<span><input type="text" title="Enter comments"></span>
+			</div><br>
+            <button type="submit" class="btn">Submit ></button><br>			
+			<!-- <div class="alert alert-success alert-dismissible">
+			  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			  <strong>Form submitted successfully! Produce IDs are {{produceid.value}}</strong>
+			</div> -->
+			<div><img src="C:\Users\saime\Downloads\homegrown-logo-new-final.png" alt="Homegrown Logo" style="width: 120px; height: 120px; margin-left: 170px;">
+			<!-- <img src="C:\Users\saime\OneDrive\Pictures\Screenshots\Screenshot 2024-01-30 062001.png" alt="UC" style="float: right; width:70px; height: 70px;"> -->
+			<!-- </div><br><br><br><br> -->
+			</div>
+        </form>
+    </div>
+    </div>
+	</div>	
+	</div>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+
+function addProduceDetails() {
+	const div = document.createElement('div');
+
+  div.className = 'new-produce';
+
+  div.innerHTML = `
+    <div>
+			<label class="mand label-class">Crops Received:</label>
+			<span>
+				<select name="cropsList" id="cropsList" required>
+				<option value="">-Select-</option> 
+				<option value="TOMATO">Tomato</option>
+				<option value="YELLOW ONION">Yellow Onion</option>
+				<option value="RED ONION">Red Onion</option>
+				<option value="GARLIC">Garlic</option>
+				<option value="SWEET POTATO">Sweet Potato</option>
+				<option value="RED BELL PEPPER">Red Bell Pepper</option>
+				<option value="SERRANO PEPPER">Serrano Pepper</option> 
+				<option value="JALAPEÑO PEPPER">Jalapeño Pepper</option>
+				<option value="HABANERO PEPPER">Habanero Pepper</option>
+				<option value="SCOTCH BONNET PEPPER">Scotch Bonnet Pepper</option>
+				<option value="CILANTRO">Cilantro</option>
+				<option value="PARSLEY">Parsley</option>
+				<option value="SHALLOTS">Shallots</option>
+				<option value="GREEN ONION">Green Onion</option>
+				<option value="BASIL">Basil</option>
+				<option value="CAYENNE PEPPER">Cayenne Pepper</option>
+				</select>
+			</span>
+			</div>
+			<div>
+            <label class="label-class">Harvest Date:</label>
+			<span><input type="date" id="harvestdate" name="harvestdate"></span>
+			</div>
+			<div>
+            <label class="mand label-class">Produce ID:</label>
+			<span><input type="text" id="produceid" name="produceid" onclick="generateProduceId(this)"></span>
+			</div>
+			<div>
+            <label class="mand label-class">Quantity (with units):</label>
+			<span>
+				<input type="text" class="quantext" id="quantity" name="quantity">
+				<select name="units" class="shortselect" id="units" required>
+					<option value="">-Select-</option> 
+					<option value="lb">lb</option>
+					<option value="counts">counts</option>
+				</select>
+			</span>
+			</div>
+			<div>
+            <label class="mand label-class">Quality of the Produce</label>
+			<span><select name="quality" id="quality" required>
+				<option value="">-Select-</option>
+				<option value="excellent">Excellent</option>
+				<option value="adequate">Adequate</option>
+				<option value="poor">Poor</option>
+			</select></span>
+			</div>
+			<div>
+            <label class="mand label-class">Requires Refrigeration?</label>
+			<span>
+				<select name="refrigerate" id="refrigerate" required>
+					<option value="">-Select-</option>
+					<option value="yes">Yes</option>
+					<option value="no">No</option>
+				</select>
+			</span>
+			</div>
+    <input type="button" class="del-btn" value="Delete Produce" onclick="removeProduceDetails(this)" /><br><br><br><br>
+  `;
+
+  document.getElementById('produce-details').appendChild(div);
+}
+	
+
+function removeProduceDetails(input) {
+  document.getElementById('produce-details').removeChild(input.parentNode);
+}
+
+// generate produceID for selected crop
+function generateProduceId(produce) { debugger;
+	const produceDetails = produce.closest(".new-produce");
+	const cropSelect = produceDetails.querySelector('#cropsList');
+	const cropval = cropSelect.value;
+	var produceid = "";
+	var prodcrop = "";
+	var farmid = "";
+	var siteid = "";
+	var cohort = "";
+	var week = "";
+	
+	if (cropval == "YELLOW ONION") {
+		prodcrop = "YONI";
+	} else if (cropval == "RED ONION") {
+		prodcrop = "RONI";
+	} else if (cropval == "GREEN ONION") {
+		prodcrop = "GONI";
+	} else if (cropval == "SWEET POTATO") {
+		prodcrop = "SPOT";
+	} else if (cropval == "RED BELL PEPPER") {
+		prodcrop = "RBPE";
+	} else if (cropval == "SERRANO PEPPER") {
+		prodcrop = "SPEP";
+	} else if (cropval == "JALAPEÑO PEPPER") {
+		prodcrop = "JPEP";
+	} else if (cropval == "HABANERO PEPPER") {
+		prodcrop = "HPEP";
+	} else if (cropval == "SCOTCH BONNET PEPPER") {
+		prodcrop = "SBPE";
+	} else if (cropval == "CAYENNE POTATO") {
+		prodcrop = "CPEP";
+	} else if (cropval == "CILANTRO") {
+		prodcrop = "HCIL";
+	} else if (cropval == "PARSLEY") {
+		prodcrop = "HPAR";
+	} else if (cropval == "BASIL") {
+		prodcrop = "HBAS";
+	} else {
+		prodcrop = cropval.substring(0,4);
+	}
+	
+	var harvestDateSelect = produceDetails.querySelector('#harvestdate');
+	var harvestDate = harvestDateSelect.value;
+	if (harvestDate == "") {
+		harvestDate = document.getElementById("pickupdate").value;
+	}
+	harvestDate = harvestDate.replace(/-/g, "");
+	
+	var farmName = document.getElementById("farmname").value;
+	if (farmName == "brick gardens") {
+		farmid = "001";
+	} else if (farmName == "qmm") {
+		farmid = "002";
+	} else if (farmName == "lincoln heights") {
+		farmid = "003";
+	} else {
+		farmid = "000";
+	}
+	
+	var pickupSite = document.getElementById("pickupsite").value;
+	if (pickupSite == "Lexington") {
+		siteid = "01";
+	} else if (pickupSite == "May Street") {
+		siteid = "02";
+	} else if (pickupSite == "Stanton") {
+		siteid = "03";
+	} else if (pickupSite == "Northside") {
+		siteid = "01";
+	} else if (pickupSite == "Madisonville") {
+		siteid = "02";
+	} else if (pickupSite == "other") {
+		siteid = "04";
+	} else {
+		siteid = "00";
+	}
+	
+	var pickupDateVal = document.getElementById("pickupdate").value;
+	const pickupDate = new Date(pickupDateVal);
+	const c1startDate1 = new Date("2024-07-07");
+	const c1endDate1 = new Date("2024-07-13");
+	const c1startDate2 = new Date("2024-07-21");
+	const c1endDate2 = new Date("2024-07-27");
+	const c1startDate3 = new Date("2024-08-04");
+	const c1endDate3 = new Date("2024-08-10");
+	const c1startDate4 = new Date("2024-08-18");
+	const c1endDate4 = new Date("2024-08-24");
+	const c2startDate1 = new Date("2024-09-08");
+	const c2endDate1 = new Date("2024-09-14");
+	const c2startDate2 = new Date("2024-09-22");
+	const c2endDate2 = new Date("2024-09-28");
+	const c2startDate3 = new Date("2024-10-06");
+	const c2endDate3 = new Date("2024-10-12");
+	const c2startDate4 = new Date("2024-10-20");
+	const c2endDate4 = new Date("2024-10-26");
+	const c3startDate1 = new Date("2025-01-12");
+	const c3endDate1 = new Date("2025-01-18");
+	const c3startDate2 = new Date("2025-01-26");
+	const c3endDate2 = new Date("2025-02-01");
+	const c3startDate3 = new Date("2025-02-09");
+	const c3endDate3 = new Date("2025-02-15");
+	const c3startDate4 = new Date("2025-02-23");
+	const c3endDate4 = new Date("2025-03-01");
+	const c4startDate1 = new Date("2025-04-13");
+	const c4endDate1 = new Date("2025-04-19");
+	const c4startDate2 = new Date("2025-04-27");
+	const c4endDate2 = new Date("2025-05-03");
+	const c4startDate3 = new Date("2025-05-11");
+	const c4endDate3 = new Date("2025-05-17");
+	const c4startDate4 = new Date("2025-05-25");
+	const c4endDate4 = new Date("2025-05-31");
+	if (pickupDate >= c1startDate1 && pickupDate <= c1endDate1) {
+		cohort = "01";
+		week = "01";
+	} else if (pickupDate >= c1startDate2 && pickupDate <= c1endDate2) {
+		cohort = "01";
+		week = "03";
+	} else if (pickupDate >= c1startDate3 && pickupDate <= c1endDate3) {
+		cohort = "01";
+		week = "05";
+	} else if (pickupDate >= c1startDate4 && pickupDate <= c1endDate4) {
+		cohort = "01";
+		week = "07";
+	} else if (pickupDate >= c2startDate1 && pickupDate <= c2endDate1) {
+		cohort = "02";
+		week = "01";
+	} else if (pickupDate >= c2startDate2 && pickupDate <= c2endDate2) {
+		cohort = "02";
+		week = "03";
+	} else if (pickupDate >= c2startDate3 && pickupDate <= c2endDate3) {
+		cohort = "02";
+		week = "05";
+	} else if (pickupDate >= c2startDate4 && pickupDate <= c2endDate4) {
+		cohort = "02";
+		week = "07";
+	} else if (pickupDate >= c3startDate1 && pickupDate <= c3endDate1) {
+		cohort = "03";
+		week = "01";
+	} else if (pickupDate >= c3startDate2 && pickupDate <= c3endDate2) {
+		cohort = "03";
+		week = "03";
+	} else if (pickupDate >= c3startDate3 && pickupDate <= c3endDate3) {
+		cohort = "03";
+		week = "05";
+	} else if (pickupDate >= c3startDate4 && pickupDate <= c3endDate4) {
+		cohort = "03";
+		week = "07";
+	} else if (pickupDate >= c4startDate1 && pickupDate <= c4endDate1) {
+		cohort = "04";
+		week = "01";
+	} else if (pickupDate >= c4startDate2 && pickupDate <= c4endDate2) {
+		cohort = "04";
+		week = "03";
+	} else if (pickupDate >= c4startDate3 && pickupDate <= c4endDate3) {
+		cohort = "04";
+		week = "05";
+	} else if (pickupDate >= c4startDate4 && pickupDate <= c4endDate4) {
+		cohort = "04";
+		week = "07";
+	} 
+	
+	produceid = prodcrop + "-" + harvestDate + "-" + farmid + "-" + siteid + "-" + cohort + "-" + week;
+	var prodId = produceDetails.querySelector('#produceid');
+	prodId.value = produceid;
+}
+
+
+function addButton() {
+  // Create a new input field
+  var input1 = document.createElement("input");
+
+  // Set the type of input field & label
+  input1.type = "text";
+  input1.label = "Produce ID";
+  input1.addClass = "mand";
+  input1.addClass = "label-class";
+  
+  var br = document.createElement("br");
+  
+  
+  // Add the input field to the form
+  document.getElementById("produce-details").appendChild(input1).appendChild(br);
+  
+  
+}
+
+// Fill Sites dropdown
+function configureDropDownLists(farmName, pickUpSite) {debugger;
+  var bg = ['', 'Northside', 'Madisonville', 'Other'];
+  var qmm = ['', 'Lexington', 'May Street', 'Stanton', 'Other'];
+  var lh = ['', 'Other'];
+  var or = ['', 'Other'];
+
+  switch (farmName.value) {
+    case 'brick gardens':
+      pickUpSite.options.length = 0;
+      for (i = 0; i < bg.length; i++) {
+        createOption(pickUpSite, bg[i], bg[i]);
+      }
+      break;
+    case 'qmm':
+      pickUpSite.options.length = 0;
+      for (i = 0; i < qmm.length; i++) {
+        createOption(pickUpSite, qmm[i], qmm[i]);
+      }
+      break;
+    case 'lincoln heights':
+      pickUpSite.options.length = 0;
+      for (i = 0; i < lh.length; i++) {
+        createOption(pickUpSite, lh[i], lh[i]);
+      }
+      break;
+	case 'other':
+      pickUpSite.options.length = 0;
+      for (i = 0; i < or.length; i++) {
+        createOption(pickUpSite, or[i], or[i]);
+      }
+      break;
+    default:
+      ddl2.options.length = 0;
+      break;
+  }
+
+}
+
+function createOption(pickUpSite, text, value) {
+  var opt = document.createElement('option');
+  opt.value = value;
+  opt.text = text;
+  pickUpSite.options.add(opt);
+}
+
+// Get the form element
+const form = document.querySelector('form');
+
+// Add a submit event listener to the form
+form.addEventListener('submit', function(event) { debugger;
+  // Prevent the form from submitting
+  //event.preventDefault();
+
+const produceIds = [];
+    const produceDivs = document.querySelectorAll('.new-produce');
+    
+    produceDivs.forEach(function(produceDiv) {
+        const produceIdInput = produceDiv.querySelector('#produceid');
+        if (produceIdInput && produceIdInput.value) {
+            produceIds.push(produceIdInput.value);
+        }
+    });
+    
+    if (produceIds.length > 0) {
+        $('#messages').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
+		$('#messages_content').html('<h4>Form Submitted! The produce IDs are: ' + produceIds.join(', ') + '</h4>');
+		$('#modal').modal('show');
+		event.preventDefault();
+    }
+form.reset();
+});
+</script>
+</body>
+</html>
