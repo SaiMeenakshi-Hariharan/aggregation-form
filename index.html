@@ -244,7 +244,7 @@
 	<div id="container">
     <div class="centered">	
     <div class="form-wrap" id="aggForm">
-        <form action="https://script.google.com/macros/s/AKfycbwaztts37y8Jwx4jPmPTAaYUlNJZaiocm8NmNykiC3AU3Gcy2414iOClYatj7Vrc0EHtg/exec" method="POST" enctype="multipart/form-data">
+        <form>
 			<div><h2> Homegrown Produce Aggregation Form </h2></div>
 			<div><h4> <i>(All fields within <b style="color: #e32;">*</b> must be completed)</i> </h4></div>
 			<div><h5><i>To be completed by Rico (at pickup from Dom only) and Mona (upon receiving each produce allotment)</i></h5></div>
@@ -677,6 +677,29 @@ const produceIds = [];
         if (produceIdInput && produceIdInput.value) {
             produceIds.push(produceIdInput.value);
         }
+    });
+
+    const formData = new FormData(this);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    fetch('https://script.google.com/macros/s/AKfycbzuBIMlxi0Ie4_4CVu9v0CPwDmw_l_ZF_1YLNCQzuxLjZh7ImiCeRDlaD_dmInB7iyPAg/exec', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log('Success:', result);
+      // Handle the success response here
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Handle the error here
     });
     
     if (produceIds.length > 0) {
