@@ -288,7 +288,7 @@
 			</div>
 			<div>
             <label class="label-class">Aggregation Location:</label>
-			<span><input type="text" name="name" id="name" pattern="^[^\d]+$" title="Enter a valid name" value=""></span>
+			<span><input type="text" name="pickuplocation" id="name" pattern="^[^\d]+$" title="Enter a valid name" value=""></span>
 			</div>
 			<div>
             <label class="mand label-class">Aggregation Date:</label>
@@ -307,7 +307,7 @@
 			<div><input type="button" class="add-btn" value="Add Produce" onclick="addProduceDetails()"></div><br><br><br><br>
 			<div>
 			<label class="label-class">Upload Photo(s):</label>
-			<span><input type="file" multiple="" data-max_length="5" accept=".jpg,.jpeg, .png" title="Enter a valid photo"></span>
+			<span><input type="file" multiple="" data-max_length="5" accept=".jpg,.jpeg, .png" title="Enter a valid photo" name="aggregationphoto"></span>
 			</div>
 			<div><h5><i><b>Note:</b>&nbsp;Please Upload a Closeup of the Produce item(s). Also, to select multiple files, hold down the CTRL or SHIFT key while selecting.</i></h5></div>
 			<div>
@@ -322,7 +322,7 @@
 			<div>
 			<!-- <label>Food bins/crates returned to the distributor?</label> -->
             <label class="label-class mand">Food bins/crates returned?</label>
-			<span><select name="producecleaned" id="producecleaned" required>
+			<span><select name="foodbinreturn" id="producecleaned" required>
 				<option value="">-Select-</option>
 				<option value="yes">Yes</option>
 				<option value="no">No</option>
@@ -330,7 +330,7 @@
 			</div>			
 			<div>
 			<label class="label-class">Comments:</label>
-			<span><input type="text" title="Enter comments"></span>
+			<span><input type="text" title="Enter comments" name="comments"></span>
 			</div><br>
             <button type="submit" class="btn">Submit ></button><br>			
 			<!-- <div class="alert alert-success alert-dismissible">
