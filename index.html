@@ -690,7 +690,7 @@ const produceIds = [];
     fetch('https://script.google.com/macros/s/AKfycbyuZsm6spWj-WVLR8Vev0h_OMdg6d_DIUgopD_tZPm3uBMSqqlRLP8s3limXUqZgsPSTw/exec', {
       method: 'POST',
       headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
+        'Content-Type': 'multipart/form-data',
       },
       body: JSON.stringify(data),
     })
