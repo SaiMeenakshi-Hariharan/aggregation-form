@@ -479,12 +479,14 @@ function generateProduceId(produce) { debugger;
 	harvestDate = harvestDate.replace(/-/g, "");
 	
 	var farmName = document.getElementById("farmname").value;
-	if (farmName == "brick gardens") {
+	if (farmName == "Brick Gardens") {
 		farmid = "001";
-	} else if (farmName == "qmm") {
+	} else if (farmName == "QMM") {
 		farmid = "002";
-	} else if (farmName == "lincoln heights") {
+	} else if (farmName == "Lincoln Heights") {
 		farmid = "003";
+	} else if (farmName == "Other") {
+		farmid = "004";
 	} else {
 		farmid = "000";
 	}
@@ -623,25 +625,25 @@ function configureDropDownLists(farmName, pickUpSite) {debugger;
   var or = ['', 'Other'];
 
   switch (farmName.value) {
-    case 'brick gardens':
+    case 'Brick Gardens':
       pickUpSite.options.length = 0;
       for (i = 0; i < bg.length; i++) {
         createOption(pickUpSite, bg[i], bg[i]);
       }
       break;
-    case 'qmm':
+    case 'QMM':
       pickUpSite.options.length = 0;
       for (i = 0; i < qmm.length; i++) {
         createOption(pickUpSite, qmm[i], qmm[i]);
       }
       break;
-    case 'lincoln heights':
+    case 'Lincoln Heights':
       pickUpSite.options.length = 0;
       for (i = 0; i < lh.length; i++) {
         createOption(pickUpSite, lh[i], lh[i]);
       }
       break;
-	case 'other':
+	case 'Other':
       pickUpSite.options.length = 0;
       for (i = 0; i < or.length; i++) {
         createOption(pickUpSite, or[i], or[i]);
