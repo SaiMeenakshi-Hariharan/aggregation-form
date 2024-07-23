@@ -694,31 +694,35 @@ const refrigerations = [];
             produceIds.push(produceIdInput.value);
 	    document.getElementById('produceidlist').value = produceIds.join(', ');
         }
+	    
 	const cropsInput = produceDiv.querySelector('#cropsList');
         if (cropsInput && cropsInput.value) {
             cropsReceived.push(cropsInput.value);
 	    document.getElementById('cropsreceivedlist').value = cropsReceived.join(', ');
         }
+	    
 	const harvestDateInput = produceDiv.querySelector('#harvestdate');
-        if (harvestDateInput && harvestDateInput.value) {
             harvestDates.push(harvestDateInput.value);
 	    document.getElementById('harvestdatelist').value = harvestDates.join(', ');
-        }
+	    
 	const quantitiesInput = produceDiv.querySelector('#quantity');
         if (quantitiesInput && quantitiesInput.value) {
             quantities.push(quantitiesInput.value);
 	    document.getElementById('quantitylist').value = quantities.join(', ');
         }
+	    
 	const unitsInput = produceDiv.querySelector('#units');
         if (unitsInput && unitsInput.value) {
             unitsList.push(unitsInput.value);
 	    document.getElementById('unitslist').value = unitsList.join(', ');
         }
+	    
 	const qualitiesInput = produceDiv.querySelector('#quality');
         if (qualitiesInput && qualitiesInput.value) {
             qualities.push(qualitiesInput.value);
 	    document.getElementById('qualitylist').value = qualities.join(', ');
         }
+	    
 	const refrigerationsInput = produceDiv.querySelector('#refrigerate');
         if (refrigerationsInput && cropsInput.value) {
             refrigerations.push(refrigerationsInput.value);
