@@ -12,7 +12,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 <style>
     * {
@@ -307,7 +306,7 @@
 			<div><input type="button" class="add-btn" value="Add Produce" onclick="addProduceDetails()"></div><br><br><br><br>
 			<div>
 			<label class="label-class">Upload Photo(s):</label>
-			<span><input type="file" multiple="" data-max_length="5" accept=".jpg,.jpeg, .png" title="Enter a valid photo" name="aggregationphoto"></span>
+			<span><input type="file" multiple="" data-max_length="5" accept=".jpg,.jpeg, .png" title="Enter a valid photo" name="aggregationphoto" id="aggregation-photo" ></span>
 			</div>
 			<div><h5><i><b>Note:</b>&nbsp;Please Upload a Closeup of the Produce item(s). Also, to select multiple files, hold down the CTRL or SHIFT key while selecting.</i></h5></div>
 			<div>
@@ -371,14 +370,24 @@ function addProduceDetails() {
 				<option value="YELLOW ONION">Yellow Onion</option>
 				<option value="RED ONION">Red Onion</option>
 				<option value="GARLIC">Garlic</option>
+				<option value="GINGER">Ginger</option>
+				<option value="COLLARDS">Collards</option>
+				<option value="MUSTARDS">Mustards</option>
 				<option value="SWEET POTATO">Sweet Potato</option>
 				<option value="RED BELL PEPPER">Red Bell Pepper</option>
 				<option value="SERRANO PEPPER">Serrano Pepper</option> 
 				<option value="JALAPEÑO PEPPER">Jalapeño Pepper</option>
 				<option value="HABANERO PEPPER">Habanero Pepper</option>
 				<option value="SCOTCH BONNET PEPPER">Scotch Bonnet Pepper</option>
+				<option value="CORN">Corn</option>
+				<option value="BLACK BEANS">Black Beans</option>
+				<option value="BLACK EYED PEAS">Black Eyed Peas</option>
 				<option value="CILANTRO">Cilantro</option>
+				<option value="LEMONGRASS">Lemongrass</option>
+				<option value="CELERY">Celery</option>
+				<option value="PUMPKIN">Pumpkin</option>
 				<option value="PARSLEY">Parsley</option>
+				<option value="LEEKS">Leeks</option>
 				<option value="SHALLOTS">Shallots</option>
 				<option value="GREEN ONION">Green Onion</option>
 				<option value="BASIL">Basil</option>
@@ -437,7 +446,7 @@ function removeProduceDetails(input) {
 }
 
 // generate produceID for selected crop
-function generateProduceId(produce) { debugger;
+function generateProduceId(produce) {
 	const produceDetails = produce.closest(".new-produce");
 	const cropSelect = produceDetails.querySelector('#cropsList');
 	const cropval = cropSelect.value;
@@ -466,8 +475,12 @@ function generateProduceId(produce) { debugger;
 		prodcrop = "HPEP";
 	} else if (cropval == "SCOTCH BONNET PEPPER") {
 		prodcrop = "SBPE";
-	} else if (cropval == "CAYENNE POTATO") {
+	} else if (cropval == "CAYENNE PEPPER") {
 		prodcrop = "CPEP";
+	} else if (cropval == "BLACK BEANS") {
+		prodcrop = "BBEA";
+	} else if (cropval == "BLACK EYED PEAS") {
+		prodcrop = "BEPE";
 	} else if (cropval == "CILANTRO") {
 		prodcrop = "HCIL";
 	} else if (cropval == "PARSLEY") {
@@ -625,7 +638,7 @@ function addButton() {
 }
 
 // Fill Sites dropdown
-function configureDropDownLists(farmName, pickUpSite) {debugger;
+function configureDropDownLists(farmName, pickUpSite) {
   var bg = ['', 'Northside', 'Madisonville', 'Other'];
   var qmm = ['', 'Lexington', 'May Street', 'Stanton', 'Avondale Recreation Center', 'Other'];
   var lh = ['', 'Other'];
@@ -674,9 +687,9 @@ function createOption(pickUpSite, text, value) {
 const form = document.querySelector('form');
 
 // Add a submit event listener to the form
-form.addEventListener('submit', function(event) { debugger;
+form.addEventListener('submit', function(event) {
   // Prevent the form from submitting
-  //event.preventDefault();
+	event.preventDefault();
 
 const produceIds = [];
 const cropsReceived = [];
@@ -731,12 +744,44 @@ const refrigerations = [];
     });
 
     const formData = new FormData(this);
+    const fileInput = document.getElementById('aggregation-photo');
+      const files = fileInput.files;
+
+      if (files.length > 0) {
+        const fileReaders = [];
+        const base64Strings = [];
+        const fileTypes = [];
+
+        for (let i = 0; i < files.length; i++) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            base64Strings.push(e.target.result.split(',')[1]); // Base64 string
+            fileTypes.push(files[i].type); // File MIME type
+            if (base64Strings.length === files.length) {
+              formData.append('photoData', JSON.stringify(base64Strings));
+              formData.append('fileTypes', JSON.stringify(fileTypes));
+	      sendData(formData);
+	    }
+	  };
+
+	  reader.onerror = function(e) {
+	        console.error("Error reading file: ", files[i].name, e);
+	  };
+
+	  reader.readAsDataURL(files[i]);
+	}
+      } else {
+	sendData(formData);
+      }		  
+});
+    
+function sendData(formData) {
     const data = {};
     formData.forEach((value, key) => {
       data[key] = value;
     });
 
-    fetch('https://script.google.com/macros/s/AKfycbw8f_qrTFzVeyKy3yXOXcmoBD5qGiv-wynJK9Lj4RLD5MIdBIcKMTmdhAFUFjcRH-vpqQ/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwtu3FSrSJ8P8nr5P7WEXzgZ_FjSNvtCFVRGgjVGj_IButjpg_IsK9764MM3IiG3FbD4Q/exec', {
       method: 'POST',
       headers: {
         'Content-Type': 'text/plain;charset=utf-8',
@@ -756,9 +801,8 @@ const refrigerations = [];
     if (produceIds.length > 0) {
         $('#messages').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
 		$('#messages_content').html('<h4>Form Submitted! The produce IDs are: ' + produceIds.join(', ') + '</h4>');
-		event.preventDefault();
     }
-});
+}
 </script>
 </body>
 </html>
