@@ -775,9 +775,7 @@ const refrigerations = [];
       }		  
 });
     
-function sendData(formData, produceIdList) {
-    const produceIds = [];
-    produceIds = produceIdList;
+function sendData(formData, produceIds) {
     const data = {};
     formData.forEach((value, key) => {
       data[key] = value;
