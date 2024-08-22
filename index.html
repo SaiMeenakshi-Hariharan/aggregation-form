@@ -771,11 +771,11 @@ const refrigerations = [];
 	  reader.readAsDataURL(files[i]);
 	}
       } else {
-	sendData(formData);
+	sendData(formData, produceIds);
       }		  
 });
     
-function sendData(formData) {
+function sendData(formData, produceIds) {
     const data = {};
     formData.forEach((value, key) => {
       data[key] = value;
