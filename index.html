@@ -760,7 +760,7 @@ const refrigerations = [];
             if (base64Strings.length === files.length) {
               formData.append('photoData', JSON.stringify(base64Strings));
               formData.append('fileTypes', JSON.stringify(fileTypes));
-	      sendData(formData);
+	      sendData(formData, produceIds);
 	    }
 	  };
 
